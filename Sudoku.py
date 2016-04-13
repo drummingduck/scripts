@@ -63,6 +63,16 @@ class Sudoku(object):
 				for j in range (mody , mody + 3 ):
 					if self.puzzle_array[i][j] in b:
 						b.remove(self.puzzle_array[i][j])
+			self.possibles_list[x][y] = b
+		else:
+			self.possibles_list[x][y] = [a]
+
+	def inferred_moves(self, x, y):
+		a = self.puzzle_array[x][y]
+		b = self.possibles_list[x][y]
+		modx = (x//3)*3
+		mody = (y//3)*3
+		if a == 0:
 			#----------------
 			#for each cell checks possibilities of each cell in column, row, box
 			#if possibility is not in any other cell it sets the cell to that possibility
@@ -103,16 +113,19 @@ class Sudoku(object):
 							possible_counter = possible_counter + 1
 				if possible_counter == 8:
 					a = possiblity
-			#----------------
-			#----------------
-			#this needs to be rules 4
-			#----------------
-			#----------------
-			self.possibles_list[x][y] = b
 		else:
-			self.possibles_list[x][y] = [a]
-		#print self.possibles_list[x][y]
+			None
 
+			#----------------
+			#----------------
+	#def rule_4(self)
+			#this needs to be rule 4
+			#----------------
+	#def naked_pairs(self)
+	#def lines(self)
+			#http://byteauthor.com/2010/08/sudoku-solver-update/
+			#----------------
+			#----------------
 	def possible_moves_board(self):
 		self.count = 0
 		for i in range(9):
@@ -122,6 +135,7 @@ class Sudoku(object):
 				if len(moves) == 1:
 					self.puzzle_array[i][j] = self.possibles_list[i][j][0]
 					self.count = self.count + 1
+				self.inferred_moves(i,j)
 
 
 	def solve_sudoku(self):

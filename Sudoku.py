@@ -148,7 +148,7 @@ class Sudoku(object):
 board = ["game..", "game2..."]
 board = ".9..8..2.71.2....8.685........4.2.15.5.798.349..1..7.6.7.3.4.62.26..135...39..14."
 board2 = ".94...13..............76..2.8..1.....32.........2...6.....5.4.......8..7..63.4..8"
-sudoku1 = Sudoku(board2)
+sudoku1 = Sudoku(board)
 
 sudoku1.print_puzzle()
 sudoku1.chop_puzzle()

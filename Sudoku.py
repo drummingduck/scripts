@@ -9,7 +9,7 @@ class Sudoku(object):
 		self.puzzle_array = [[0 for j in range(9)] for i in range(9)]
 		self.possibles_list = [[[1,2,3,4,5,6,7,8,9] for j in range(9)] for i in range(9)]
 		self.count = 0
-		# TODO: self.init_board()
+		self.runs = 0
 
 	def print_puzzle(self):
 		# for line in self.puzzle:
@@ -18,8 +18,6 @@ class Sudoku(object):
 			print self.puzzle[i*9:9+i*9]
 			i = i + 1
 
-	# TODO: maybe rename this to init_board or something
-	# and call it in the __init__
 	def chop_puzzle(self):
 		# for line in self.puzzle:
 		for h in range(9):
@@ -37,56 +35,105 @@ class Sudoku(object):
 		for row in self.puzzle_array:
 			print row
 
-	# TODO: instead of setting a possibles_list, this function should just return the list
 	def possible_moves(self, x, y):
 		a = self.puzzle_array[x][y]
 		b = self.possibles_list[x][y]
 		modx = (x//3)*3
 		mody = (y//3)*3
 		if a == 0:
+			#----------------
+			#Check column, row, box for numbers already known
+			#and remove from possiilities list for each cell.
+			#----------------
+			#column
+			#----------------
 			for i in range(9):
 				if self.puzzle_array[x][i] in b:
 					b.remove(self.puzzle_array[x][i])
+			#----------------
+			#row
+			#----------------
 			for i in range(9):
 				if self.puzzle_array[i][y] in b:
 					b.remove(self.puzzle_array[i][y])
+			#----------------
+			#box
+			#----------------
 			for i in range(modx , modx + 3 ):
 				for j in range (mody , mody + 3 ):
 					if self.puzzle_array[i][j] in b:
 						b.remove(self.puzzle_array[i][j])
+			#----------------
+			#for each cell checks possibilities of each cell in column, row, box
+			#if possibility is not in any other cell it sets the cell to that possibility
+			#----------------
+			#column
+			#----------------
+			possible_counter = 0
+			for possiblity in b:
+				for i in range(9):
+					if possiblity in self.possibles_list[x][i]:
+						pass
+					else:
+						possible_counter = possible_counter + 1
+				if possible_counter == 8:
+					a = possiblity
+			#----------------
+			#row
+			#----------------
+			possible_counter = 0
+			for possiblity in b:
+				for i in range(9):
+					if possiblity in self.possibles_list[i][y]:
+						pass
+					else:
+						possible_counter = possible_counter + 1
+				if possible_counter == 8:
+					a = possiblity
+			#----------------
+			#box
+			#----------------
+			possible_counter = 0
+			for possiblity in b:
+				for i in range(modx , modx + 3 ):
+					for j in range (mody , mody + 3 ):
+						if possiblity in self.possibles_list[i][j]:
+							pass
+						else:
+							possible_counter = possible_counter + 1
+				if possible_counter == 8:
+					a = possiblity
+			#----------------
+			#----------------
+			#this needs to be rules 4
+			#----------------
+			#----------------
 			self.possibles_list[x][y] = b
 		else:
 			self.possibles_list[x][y] = [a]
 		#print self.possibles_list[x][y]
 
-	#
-	# TODO: implement this, using the logic in your email. You should be able to use possible_moves
-	#
-	def inferred_moves(self, i, j):
-		print "implement inferred_moves"
-		
 	def possible_moves_board(self):
 		self.count = 0
 		for i in range(9):
 			for j in range (9):
-				# you should call this like: self.possible_moves(i, j)
-				Sudoku.possible_moves(self,i,j)
-				# moves = self.possible_moves(i, j)
-				# if len(moves) == 1:
-				if len(self.possibles_list[i][j]) == 1:
+				self.possible_moves(i,j)
+				moves = self.possibles_list[i][j]
+				if len(moves) == 1:
 					self.puzzle_array[i][j] = self.possibles_list[i][j][0]
-					# self.print_board()
-					Sudoku.print_board(self)
 					self.count = self.count + 1
-	
+
+
 	def solve_sudoku(self):
-		# TODO: instead of self.count != 81
-		# maybe have a method called completed() which returns true/false
-		# while not self.completed():
+		import time
+		start_time = time.time()
 		while self.count != 81:
-			# self.find_and_fill_next_possible_move()
-			Sudoku.possible_moves_board(self)
-		Sudoku.print_board(self)
+			self.possible_moves_board()
+			self.runs = self.runs + 1
+		self.print_board()
+		print "number of runs through board:"
+		print self.runs
+		print("--- %s seconds ---" % (time.time() - start_time))
 
 
 
@@ -100,7 +147,8 @@ class Sudoku(object):
 
 board = ["game..", "game2..."]
 board = ".9..8..2.71.2....8.685........4.2.15.5.798.349..1..7.6.7.3.4.62.26..135...39..14."
-sudoku1 = Sudoku(board)
+board2 = ".94...13..............76..2.8..1.....32.........2...6.....5.4.......8..7..63.4..8"
+sudoku1 = Sudoku(board2)
 
 sudoku1.print_puzzle()
 sudoku1.chop_puzzle()
@@ -108,6 +156,11 @@ sudoku1.print_board()
 sudoku1.possible_moves(0,1)
 sudoku1.possible_moves_board()
 sudoku1.solve_sudoku()
+
+
+
+
+
 
 
 

@@ -150,6 +150,7 @@ class Sudoku(object):
 							if possibility in self.possibles_list[i][y]:
 								c = self.possibles_list[i][y]
 								c.remove(possibility)
+								self.possibles_list[i][y] = c
 				#check column
 				tick = 0
 				for i in range(mody , mody + 3):
@@ -167,6 +168,7 @@ class Sudoku(object):
 							if possibility in self.possibles_list[x][i]:
 								c = self.possibles_list[x][i]
 								c.remove(possibility)
+								self.possibles_list[x][i] = c
 		else:
 			None
 

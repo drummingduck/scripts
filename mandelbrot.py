@@ -21,15 +21,22 @@ def mandelbrot( h, w, maxit = 20):
 
 
 fig1 = plt.figure(frameon=False)
+
+
+
 ims = []
 
-for i in range(30):
-	im = plt.imshow(mandelbrot(400,400,i))
+for i in range(25):
+	im = plt.imshow(mandelbrot(1000,1000,i))
+	cur_axes = plt.gca()
+	cur_axes.axes.get_xaxis().set_visible(False)
+	cur_axes.axes.get_yaxis().set_visible(False)
 	ims.append([im])
 reversed_arr = ims[::-1]
 imsf = ims + reversed_arr
 
-im_ani = animation.ArtistAnimation(fig1, imsf, interval=50, repeat_delay=3000,
+
+im_ani = animation.ArtistAnimation(fig1, imsf, interval=70, repeat_delay=3000,
     blit=True)
 im_ani.save('mandelbrot.gif', writer='imagemagick')
 
